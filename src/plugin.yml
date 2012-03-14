@@ -1,0 +1,16 @@
+name: AutoRanker
+version: '0.0.1'
+author: clehner
+website: http://github.com/clehner/AutoRanker
+main: com.celehner.AutoRanker.AutoRanker
+description: Automatically execute commands for people when LogBlock conditions are met.
+softdepend: [LogBlock]
+commands:
+  autorank:
+    description: AutoRank commands.
+    usage: /<command> reload
+    permission: autorank.reload
+permissions:
+  autorank.reload:
+    description: 'Allow reloading the AutoRank configuration.'
+    default: op

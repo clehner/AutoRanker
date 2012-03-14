@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<project default="main">
+
+	<target name="main" depends="compile, jar" description="Main target">
+		<echo>Building the .jar file.</echo>
+	</target>
+
+	<target name="init">
+		<mkdir dir="lib/"/>
+		<mkdir dir="bin/"/>
+	</target>
+
+	<target name="deps" depends="init">
+		<echo>Downloading Dependencies</echo>
+		<get src="http://dl.bukkit.org/latest-rb/bukkit.jar" dest="lib/bukkit.jar"/>
+		<get src="http://dl.bukkit.org/latest-rb/craftbukkit.jar" dest="lib/craftbukkit.jar"/>
+		<get src="http://diddiz.insane-architects.net:8080/job/LogBlock/lastSuccessfulBuild/artifact/LogBlock.jar" dest="lib/LogBlock.jar"/>
+	</target>
+
+	<target name="compile">
+		<echo>Compiling</echo>
+		<javac srcdir="src/" destdir="bin/" debug="true" debuglevel="lines,source" includeantruntime="false">
+			<classpath>
+				<path location="lib/bukkit.jar"/>
+				<path location="lib/craftbukkit.jar"/>
+				<path location="lib/LogBlock.jar"/>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="AutoRanker.jar">
+			<fileset dir="bin/"/>
+			<fileset file="src/plugin.yml"/>
+		</jar>
+	</target>
+
+	<target name="clean">
+	    <echo>Cleaning</echo>
+		<delete file="AutoRanker.jar"/>
+		<delete dir="lib/"/>
+		<delete dir="bin/"/>
+	</target>
+</project>

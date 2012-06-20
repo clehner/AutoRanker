@@ -54,6 +54,7 @@ class Rank {
 			}
 		} catch (final SQLException ex) {
 			plugin.log.log(Level.WARNING, "Unable to lookup.", ex);
+			return false;
 		}
 		if (hasPermission != "") {
 			if (!player.hasPermission(hasPermission)) return false;

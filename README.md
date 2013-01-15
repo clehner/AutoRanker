@@ -15,7 +15,7 @@ Permissions
 -----------
 
 * `autorank.reload`
-	allows a player to reload the configuration without restarting.
+	allows a player to reload the AutoRanker configuration.
 
 Configuration
 -------------
@@ -61,3 +61,4 @@ Compiling
 
     ant deps
     ant
+

@@ -14,7 +14,7 @@
 		<echo>Downloading Dependencies</echo>
 		<get src="http://dl.bukkit.org/latest-rb/bukkit.jar" dest="lib/bukkit.jar"/>
 		<get src="http://dl.bukkit.org/latest-rb/craftbukkit.jar" dest="lib/craftbukkit.jar"/>
-		<get src="http://diddiz.insane-architects.net:8080/job/LogBlock/lastSuccessfulBuild/artifact/LogBlock.jar" dest="lib/LogBlock.jar"/>
+		<get src="http://ci.md-5.net/job/LogBlock/lastSuccessfulBuild/" dest="lib/LogBlock.jar"/>
 	</target>
 
 	<target name="compile">

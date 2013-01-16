@@ -114,7 +114,7 @@ public class AutoRanker extends JavaPlugin
 				ranks.add(new Rank(rankName, daysOnline, onlineTime,
 					hasPermission, hasNotPermission,
 					created, destroyed, commands, this));
-				log.info("[AutoRanker] Added rank \"" + rankName + "\".");
+				log.info("[AutoRanker] Loaded rank " + rankName);
 			} catch (final Exception ex) {
 				log.log(Level.WARNING, "[AutoRanker] Error at parsing rank '" +
 					rankName + "': ", ex);
@@ -123,10 +123,7 @@ public class AutoRanker extends JavaPlugin
 	}
 
 	public void updatePlayerRanks(Player player) {
-		//log.info("[AutoRanker] updating ranks for " + player.getName() + ".");
-		//log.info("[AutoRanker] " + ranks.size() + ".");
 		for (final Rank rank : ranks) {
-			//log.info("[AutoRanker] rank.");
 			rank.applyCheckToPlayer(player);
 		}
 	}

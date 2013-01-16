@@ -44,17 +44,26 @@ public class AutoRanker extends JavaPlugin
 		this.getCommand("autorank").setExecutor(new CommandExecutor() {
 			public boolean onCommand(CommandSender sender,
 				Command command, String label, String[] args) {
-				if (label.equals("reload")) {
+				if (args.length < 1) {
+					return false;
+				}
+
+				if (args[0].equals("reload")) {
 					if (sender.isOp() || sender.hasPermission("autorank.reload")) {
 						updateRanksFromConfig();
 						sender.sendMessage("Reloaded AutoRanker config.");
 						return true;
+
 					} else {
 						sender.sendMessage(ChatColor.RED +
 							"No permission to do that.");
+						return true;
 					}
+				} else {
+					sender.sendMessage(ChatColor.RED +
+						"Unknown command '" + args[0] + "'");
+					return true;
 				}
-				return false;
 			}
 		});
 

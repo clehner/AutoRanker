@@ -90,6 +90,7 @@ public class AutoRanker extends JavaPlugin
 			saveConfig();
 		}
 
+		int numRanksLoaded = 0;
  		for (final String rankName : ranksSec.getKeys(false)) {
 			try {
 				ConfigurationSection rSec =
@@ -115,12 +116,14 @@ public class AutoRanker extends JavaPlugin
 				ranks.add(new Rank(rankName, daysOnline, onlineTime,
 					hasPermission, hasNotPermission,
 					created, destroyed, commands, this));
-				log.info("[AutoRanker] Loaded rank " + rankName);
+				numRanksLoaded++;
 			} catch (final Exception ex) {
 				log.log(Level.WARNING, "[AutoRanker] Error at parsing rank '" +
 					rankName + "': ", ex);
 			}
 		}
+
+		log.info("[AutoRanker] Loaded " + numRanksLoaded + " rank" + (numRanksLoaded == 1 ? "" : "s"));
 	}
 
 	public void updatePlayerRanks(Player player) {

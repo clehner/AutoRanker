@@ -1,6 +1,9 @@
 package com.celehner.AutoRanker;
 
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.List;
 import org.bukkit.entity.Player;
@@ -10,9 +13,9 @@ import de.diddiz.LogBlock.QueryParams;
 import de.diddiz.LogBlock.QueryParams.BlockChangeType;
 import de.diddiz.LogBlock.BlockChange;
 
-class Rank {
+public final class Rank {
 	String name;
-	String onlineTime;
+	int hoursOnline;
 	int daysOnline;
 	int created; // block counts
 	int destroyed;
@@ -20,25 +23,72 @@ class Rank {
 	String hasNotPermission;
 	List<String> commands;
 	AutoRanker plugin;
+	LogBlock logblock;
 
-	Rank(String name, int daysOnline, String onlineTime,
+	Rank(String name, int daysOnline, int hoursOnline,
 		String hasPermission, String hasNotPermission,
 		int created, int destroyed,
 		List<String> commands, AutoRanker plugin) {
 
 		this.name = name;
 		this.daysOnline = daysOnline;
-		this.onlineTime = onlineTime;
+		this.hoursOnline = hoursOnline;
 		this.hasPermission = hasPermission;
 		this.hasNotPermission = hasNotPermission;
 		this.created = created;
 		this.destroyed = destroyed;
 		this.commands = commands;
 		this.plugin = plugin;
+		this.logblock = plugin.getLogBlock();
+	}
+
+	// get days between first and last login for a player
+	public int getPlayerDaysOnline(Player player) throws SQLException {
+		final String playerName = player.getName().replaceAll("[^a-zA-Z0-9_]", "");
+		if (playerName.length() == 0) return 0;
+		final Connection conn = logblock.getConnection();
+		Statement state = null;
+		if (conn == null)
+			throw new SQLException("No connection");
+		try {
+			state = conn.createStatement();
+			final ResultSet rs = state.executeQuery(
+					"SELECT DATEDIFF(lastlogin, firstlogin) AS daysonline " +
+					"FROM `lb-players` WHERE playername='" + playerName + "'");
+			if (!rs.next())
+				return 0;
+			return rs.getInt(1);
+		} finally {
+			if (state != null)
+				state.close();
+			conn.close();
+		}
+	}
+
+	// get player online time in hours
+	public int getPlayerHoursOnline(Player player) throws SQLException {
+		final String playerName = player.getName().replaceAll("[^a-zA-Z0-9_]", "");
+		if (playerName.length() == 0) return 0;
+		final Connection conn = logblock.getConnection();
+		Statement state = null;
+		if (conn == null)
+			throw new SQLException("No connection");
+		try {
+			state = conn.createStatement();
+			final ResultSet rs = state.executeQuery(
+					"SELECT onlinetime FROM `lb-players` " +
+					"WHERE playername = '" + playerName + "'");
+			if (!rs.next())
+				return 0;
+			return rs.getInt(1)/3600;
+		} finally {
+			if (state != null)
+				state.close();
+			conn.close();
+		}
 	}
 
 	public boolean playerMeetsRequirements(Player player) {
-		LogBlock logblock = plugin.getLogBlock();
 		QueryParams p = new QueryParams(logblock);
 		p.setPlayer(player.getName());
 		p.world = player.getServer().getWorlds().get(0);
@@ -51,6 +101,12 @@ class Rank {
 			if (destroyed > 0) {
 				p.bct = BlockChangeType.DESTROYED;
 				if (logblock.getCount(p) < destroyed) return false;
+			}
+			if (daysOnline > 0) {
+				if (getPlayerDaysOnline(player) < daysOnline) return false;
+			}
+			if (hoursOnline > 0) {
+				if (getPlayerHoursOnline(player) < hoursOnline) return false;
 			}
 		} catch (final SQLException ex) {
 			plugin.log.log(Level.WARNING, "Unable to lookup.", ex);

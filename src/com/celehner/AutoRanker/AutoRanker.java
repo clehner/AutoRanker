@@ -107,13 +107,13 @@ public class AutoRanker extends JavaPlugin
 				int daysOnline = reqs.getInt("daysonline", 0);
 				int created = reqs.getInt("created", 0);
 				int destroyed = reqs.getInt("destroyed", 0);
-				String onlineTime = reqs.getString("onlinetime", "");
+				int hoursOnline = reqs.getInt("hoursOnline", 0);
 				String hasPermission = reqs.getString("haspermission", "");
 				String hasNotPermission = reqs.getString("hasnotpermission", "");
 
 				List<String> commands = rSec.getStringList("commands");
 
-				ranks.add(new Rank(rankName, daysOnline, onlineTime,
+				ranks.add(new Rank(rankName, daysOnline, hoursOnline,
 					hasPermission, hasNotPermission,
 					created, destroyed, commands, this));
 				numRanksLoaded++;

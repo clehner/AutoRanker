@@ -1,5 +1,5 @@
 name: AutoRanker
-version: '0.1.0'
+version: '0.2.0'
 author: clehner
 website: https://github.com/clehner/AutoRanker
 main: com.celehner.AutoRanker.AutoRanker

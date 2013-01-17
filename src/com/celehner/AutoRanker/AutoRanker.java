@@ -50,6 +50,7 @@ public class AutoRanker extends JavaPlugin
 
 				if (args[0].equals("reload")) {
 					if (sender.isOp() || sender.hasPermission("autorank.reload")) {
+						reloadConfig();
 						updateRanksFromConfig();
 						sender.sendMessage("Reloaded AutoRanker config.");
 						return true;

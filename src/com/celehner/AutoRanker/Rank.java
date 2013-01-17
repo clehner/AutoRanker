@@ -72,7 +72,7 @@ class Rank {
 			" to " + name);
 		for (String commandLine : commands) {
 			server.dispatchCommand(server.getConsoleSender(),
-				commandLine.replace("PLAYER", player.getName()));
+				commandLine.replace("{PLAYER}", player.getName()));
 		}
 	}
 

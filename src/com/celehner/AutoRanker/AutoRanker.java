@@ -107,7 +107,7 @@ public class AutoRanker extends JavaPlugin
 				int daysOnline = reqs.getInt("daysonline", 0);
 				int created = reqs.getInt("created", 0);
 				int destroyed = reqs.getInt("destroyed", 0);
-				int hoursOnline = reqs.getInt("hoursOnline", 0);
+				int hoursOnline = reqs.getInt("hoursonline", 0);
 				String hasPermission = reqs.getString("haspermission", "");
 				String hasNotPermission = reqs.getString("hasnotpermission", "");
 
